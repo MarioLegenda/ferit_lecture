@@ -1,7 +1,11 @@
 package create
 
+import "gorm.io/gorm"
+
 type User struct {
-	Name     string
-	LastName string
-	Email    string
+	gorm.Model
+
+	Name     string `validate:"required"`
+	LastName string `validate:"required"`
+	Email    string `validate:"required,email"`
 }

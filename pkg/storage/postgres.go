@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type PostgresDb struct {
+type postgresDb struct {
 	db *gorm.DB
 }
 
-func (p *PostgresDb) Connect(dsn string) error {
+func (p *postgresDb) Connect(dsn string) error {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
@@ -21,12 +21,12 @@ func (p *PostgresDb) Connect(dsn string) error {
 	return nil
 }
 
-func (p *PostgresDb) DB() *gorm.DB {
+func (p *postgresDb) DB() *gorm.DB {
 	return p.db
 }
 
-func NewPostgresDb(dsn string) (*PostgresDb, error) {
-	db := &PostgresDb{}
+func NewStorage(dsn string) (Storage, error) {
+	db := &postgresDb{}
 
 	if err := db.Connect(dsn); err != nil {
 		return nil, err

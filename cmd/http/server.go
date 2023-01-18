@@ -11,7 +11,7 @@ import (
 	"syscall"
 )
 
-func StartServer(srv *echo.Echo, db *storage.PostgresDb) {
+func StartServer(srv *echo.Echo, db storage.Storage) {
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
 		fmt.Printf("Starting server on %s:%v...\n", os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT"))
@@ -38,7 +38,7 @@ func StartServer(srv *echo.Echo, db *storage.PostgresDb) {
 	os.Exit(0)
 }
 
-func appShutdown(db *storage.PostgresDb) {
+func appShutdown(db storage.Storage) {
 	sqlDB, err := db.DB().DB()
 	if err != nil {
 		log.Fatalln("Unable to disconnect from the database: ", err)
