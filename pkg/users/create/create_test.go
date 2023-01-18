@@ -28,6 +28,10 @@ var _ = GinkgoDescribe("Users handler", func() {
 
 		gomega.Expect(err).Should(gomega.BeNil())
 
-		gomega.Expect(createdUser.ID).ShouldNot(gomega.BeEmpty())
+		gomega.Expect(createdUser.ID).Should(gomega.BeNumerically(">=", 0))
+		gomega.Expect(createdUser.UUID).ShouldNot(gomega.BeEmpty())
+		gomega.Expect(createdUser.Name).Should(gomega.Equal("name"))
+		gomega.Expect(createdUser.LastName).Should(gomega.Equal("lastName"))
+		gomega.Expect(createdUser.Email).Should(gomega.Equal("email@email.com"))
 	})
 })
