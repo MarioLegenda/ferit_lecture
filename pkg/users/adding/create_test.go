@@ -7,11 +7,11 @@ import (
 
 var _ = GinkgoDescribe("Users handler", func() {
 	GinkgoIt("should fail creating a user", func() {
-		handler := NewUserCreate(User{
+		handler := NewUserCreate(storage.User{
 			Name:     "",
 			LastName: "",
 			Email:    "",
-		}, storage.NewRepository[*User](postgresDb))
+		}, storage.NewRepository[*storage.User](postgresDb))
 
 		_, err := handler.Handle()
 
@@ -19,11 +19,11 @@ var _ = GinkgoDescribe("Users handler", func() {
 	})
 
 	GinkgoIt("should create a user", func() {
-		handler := NewUserCreate(User{
+		handler := NewUserCreate(storage.User{
 			Name:     "name",
 			LastName: "lastName",
 			Email:    "email@email.com",
-		}, storage.NewRepository[*User](postgresDb))
+		}, storage.NewRepository[*storage.User](postgresDb))
 
 		createdUser, err := handler.Handle()
 
