@@ -19,7 +19,7 @@ func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 			Name:     user.Name,
 			LastName: user.LastName,
 			Email:    user.Email,
-		}, create.NewRepository[*create.User](db))
+		}, storage.NewRepository[*create.User](db))
 
 		createdUser, err := handler.Handle()
 

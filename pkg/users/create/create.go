@@ -2,19 +2,22 @@ package create
 
 import (
 	"dirStructureLecture/pkg"
+	"dirStructureLecture/pkg/storage"
 	"errors"
 	validator "github.com/go-playground/validator/v10"
 )
 
 type Create struct {
 	user       User
-	repository Repository[*User]
+	repository storage.Repository[*User]
 }
 
 func (c Create) Validate() error {
 	validate := validator.New()
 
-	if err := validate.Struct(&c.user); err != nil {
+	model := newUserValidationModel(c.user.Name, c.user.LastName, c.user.Email)
+
+	if err := validate.Struct(&model); err != nil {
 		return errors.New("There are some validation errors")
 	}
 
@@ -59,6 +62,6 @@ func (c Create) Handle() (User, error) {
 	return model, nil
 }
 
-func NewUserCreate(user User, repository Repository[*User]) pkg.Job[User] {
+func NewUserCreate(user User, repository storage.Repository[*User]) pkg.Job[User] {
 	return Create{user: user, repository: repository}
 }

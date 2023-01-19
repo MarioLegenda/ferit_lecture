@@ -1,8 +1,9 @@
 package main
 
 import (
+	blogsCreate "dirStructureLecture/pkg/blogs/create"
 	"dirStructureLecture/pkg/storage"
-	"dirStructureLecture/pkg/users/create"
+	userCreate "dirStructureLecture/pkg/users/create"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"
@@ -13,7 +14,11 @@ func main() {
 	loadEnv()
 	db := db()
 
-	if err := create.NewRepository[create.User](db).Migrate(); err != nil {
+	if err := db.DB().AutoMigrate(userCreate.User{}); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := db.DB().AutoMigrate(blogsCreate.Blog{}); err != nil {
 		log.Fatalln(err)
 	}
 }
