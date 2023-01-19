@@ -8,8 +8,8 @@ import (
 )
 
 type Create struct {
-	blog       Blog
-	repository storage.Repository[*Blog]
+	blog       storage.Blog
+	repository storage.Repository[*storage.Blog]
 }
 
 func (c Create) Validate() error {
@@ -32,36 +32,36 @@ func (c Create) Authorize() error {
 	return nil
 }
 
-func (c Create) Logic() (Blog, error) {
+func (c Create) Logic() (storage.Blog, error) {
 	if err := c.repository.Create(&c.blog); err != nil {
-		return Blog{}, err
+		return storage.Blog{}, err
 	}
 
 	return c.blog, nil
 }
 
-func (c Create) Handle() (Blog, error) {
+func (c Create) Handle() (storage.Blog, error) {
 	if err := c.Validate(); err != nil {
-		return Blog{}, err
+		return storage.Blog{}, err
 	}
 
 	if err := c.Authenticate(); err != nil {
-		return Blog{}, err
+		return storage.Blog{}, err
 	}
 
 	if err := c.Authorize(); err != nil {
-		return Blog{}, err
+		return storage.Blog{}, err
 	}
 
 	model, err := c.Logic()
 
 	if err != nil {
-		return Blog{}, err
+		return storage.Blog{}, err
 	}
 
 	return model, nil
 }
 
-func NewBlogCreate(blog Blog, repository storage.Repository[*Blog]) pkg.Job[Blog] {
+func NewBlogCreate(blog storage.Blog, repository storage.Repository[*storage.Blog]) pkg.Job[storage.Blog] {
 	return Create{blog: blog, repository: repository}
 }
