@@ -15,12 +15,12 @@ func CreateBlogHandler(db storage.Storage) func(e echo.Context) error {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
-		handler := create.NewBlogCreate(create.Blog{
+		handler := create.NewBlogCreate(storage.Blog{
 			Title:       blog.Title,
 			Content:     blog.Content,
 			Description: blog.Description,
 			UserID:      blog.UserID,
-		}, storage.NewRepository[*create.Blog](db))
+		}, storage.NewRepository[*storage.Blog](db))
 
 		createBlog, err := handler.Handle()
 

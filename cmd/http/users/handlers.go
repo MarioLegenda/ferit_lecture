@@ -11,7 +11,7 @@ import (
 func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 	return func(c echo.Context) error {
 		var user request.User
-		if err := c.Bind(user); err != nil {
+		if err := c.Bind(&user); err != nil {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
@@ -27,6 +27,6 @@ func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
-		return c.JSON(http.StatusOK, createdUser)
+		return c.JSON(http.StatusCreated, createdUser)
 	}
 }
