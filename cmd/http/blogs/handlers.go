@@ -11,16 +11,16 @@ import (
 func CreateBlogHandler(db storage.Storage) func(e echo.Context) error {
 	return func(c echo.Context) error {
 		var blog request.Blog
-		if err := c.Bind(blog); err != nil {
+		if err := c.Bind(&blog); err != nil {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
-		handler := create.NewBlogCreate(storage.Blog{
+		handler := create.NewBlogCreate(create.Blog{
 			Title:       blog.Title,
 			Content:     blog.Content,
 			Description: blog.Description,
 			UserID:      blog.UserID,
-		}, storage.NewRepository[*storage.Blog](db))
+		}, storage.NewRepository[*create.Blog](db))
 
 		createBlog, err := handler.Handle()
 
@@ -28,6 +28,6 @@ func CreateBlogHandler(db storage.Storage) func(e echo.Context) error {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
-		return c.JSON(http.StatusOK, createBlog)
+		return c.JSON(http.StatusCreated, createBlog)
 	}
 }
