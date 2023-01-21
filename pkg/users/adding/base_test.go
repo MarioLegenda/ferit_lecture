@@ -12,7 +12,7 @@ import (
 )
 
 func loadEnv() {
-	err := godotenv.Load("../../../.env")
+	err := godotenv.Load("../../../cmd/http/.env")
 
 	if err != nil {
 		log.Fatal(err)
