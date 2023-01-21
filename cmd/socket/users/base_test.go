@@ -2,7 +2,6 @@ package users
 
 import (
 	"dirStructureLecture/pkg/storage"
-	"dirStructureLecture/pkg/users/adding"
 	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/onsi/ginkgo/v2"
@@ -67,17 +66,3 @@ var _ = GinkgoAfterSuite(func() {
 		log.Fatalln(err)
 	}
 })
-
-func testCreateUser(name string, lastName string, email string) adding.User {
-	handler := adding.NewUserCreate(adding.User{
-		Name:     name,
-		LastName: lastName,
-		Email:    email,
-	}, storage.NewRepository[*adding.User](postgresDb))
-
-	createdUser, err := handler.Handle()
-
-	gomega.Expect(err).Should(gomega.BeNil())
-
-	return createdUser
-}
