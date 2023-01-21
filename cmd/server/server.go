@@ -1,4 +1,4 @@
-package http
+package server
 
 import (
 	"context"
@@ -15,7 +15,7 @@ func StartServer(srv *echo.Echo, db storage.Storage) {
 	// Run our server in a goroutine so that it doesn't block.
 	go func() {
 		fmt.Printf("Starting server on %s:%v...\n", os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT"))
-		srv.Logger.Fatal(srv.Start(fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))))
+		srv.Logger.Fatal(srv.Start(fmt.Sprintf("%s:%s", os.Getenv("SERVER_HOST"), os.Getenv("SERVER_PORT"))))
 	}()
 
 	c := make(chan os.Signal, 1)
