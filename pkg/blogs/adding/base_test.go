@@ -68,12 +68,12 @@ var _ = GinkgoAfterSuite(func() {
 	}
 })
 
-func testCreateUser(name string, lastName string, email string) adding.User {
-	handler := adding.NewUserCreate(adding.User{
+func testCreateUser(name string, lastName string, email string) storage.User {
+	handler := adding.NewUserCreate(storage.User{
 		Name:     name,
 		LastName: lastName,
 		Email:    email,
-	}, storage.NewRepository[*adding.User](postgresDb))
+	}, storage.NewRepository[*storage.User](postgresDb))
 
 	createdUser, err := handler.Handle()
 
