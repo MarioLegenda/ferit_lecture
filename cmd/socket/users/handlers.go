@@ -3,7 +3,7 @@ package users
 import (
 	"dirStructureLecture/cmd/http/request"
 	"dirStructureLecture/pkg/storage"
-	"dirStructureLecture/pkg/users/create"
+	"dirStructureLecture/pkg/users/adding"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -39,11 +39,11 @@ func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 				return nil
 			}
 
-			handler := create.NewUserCreate(create.User{
+			handler := adding.NewUserCreate(adding.User{
 				Name:     user.Name,
 				LastName: user.LastName,
 				Email:    user.Email,
-			}, storage.NewRepository[*create.User](db))
+			}, storage.NewRepository[*adding.User](db))
 
 			createdUser, err := handler.Handle()
 
