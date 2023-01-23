@@ -2,7 +2,7 @@ package blogs
 
 import (
 	"dirStructureLecture/cmd/http/request"
-	"dirStructureLecture/pkg/blogs/create"
+	"dirStructureLecture/pkg/blogs/adding"
 	"dirStructureLecture/pkg/storage"
 	"github.com/labstack/echo/v4"
 	"net/http"
@@ -15,12 +15,12 @@ func CreateBlogHandler(db storage.Storage) func(e echo.Context) error {
 			return c.JSON(http.StatusBadRequest, err)
 		}
 
-		handler := create.NewBlogCreate(create.Blog{
+		handler := adding.NewBlogCreate(adding.Blog{
 			Title:       blog.Title,
 			Content:     blog.Content,
 			Description: blog.Description,
 			UserID:      blog.UserID,
-		}, storage.NewRepository[*create.Blog](db))
+		}, storage.NewRepository[*adding.Blog](db))
 
 		createBlog, err := handler.Handle()
 

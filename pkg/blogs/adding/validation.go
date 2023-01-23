@@ -1,4 +1,4 @@
-package create
+package adding
 
 type blogValidationModel struct {
 	Title       string `validate:"required"`

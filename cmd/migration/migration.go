@@ -1,7 +1,7 @@
 package main
 
 import (
-	blogsCreate "dirStructureLecture/pkg/blogs/create"
+	blogsCreate "dirStructureLecture/pkg/blogs/adding"
 	"dirStructureLecture/pkg/storage"
 	userCreate "dirStructureLecture/pkg/users/adding"
 	"fmt"
