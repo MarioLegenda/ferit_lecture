@@ -3,7 +3,7 @@ package main
 import (
 	blogsCreate "dirStructureLecture/pkg/blogs/create"
 	"dirStructureLecture/pkg/storage"
-	userCreate "dirStructureLecture/pkg/users/create"
+	userCreate "dirStructureLecture/pkg/users/adding"
 	"fmt"
 	"github.com/joho/godotenv"
 	"log"

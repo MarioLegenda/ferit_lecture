@@ -1,4 +1,4 @@
-package create
+package adding
 
 type userValidationModel struct {
 	Name     string `validate:"required"`

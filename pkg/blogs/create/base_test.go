@@ -2,7 +2,7 @@ package create
 
 import (
 	"dirStructureLecture/pkg/storage"
-	"dirStructureLecture/pkg/users/create"
+	"dirStructureLecture/pkg/users/adding"
 	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/onsi/ginkgo/v2"
@@ -68,12 +68,12 @@ var _ = GinkgoAfterSuite(func() {
 	}
 })
 
-func testCreateUser(name string, lastName string, email string) create.User {
-	handler := create.NewUserCreate(create.User{
+func testCreateUser(name string, lastName string, email string) adding.User {
+	handler := adding.NewUserCreate(adding.User{
 		Name:     name,
 		LastName: lastName,
 		Email:    email,
-	}, storage.NewRepository[*create.User](postgresDb))
+	}, storage.NewRepository[*adding.User](postgresDb))
 
 	createdUser, err := handler.Handle()
 

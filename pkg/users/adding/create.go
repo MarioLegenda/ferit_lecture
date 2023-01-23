@@ -1,4 +1,4 @@
-package create
+package adding
 
 import (
 	"dirStructureLecture/pkg"
