@@ -14,6 +14,7 @@ func main() {
 	srv := echo.New()
 
 	srv.POST("/user", users.CreateUserHandler(db))
+	srv.GET("/user/:id", users.GetUserHandler(db))
 	srv.POST("/blog", blogs.CreateBlogHandler(db))
 
 	lectureHttp.StartServer(srv, db)

@@ -5,3 +5,7 @@ type User struct {
 	LastName string `form:"lastName"`
 	Email    string `form:"email"`
 }
+
+type UserID struct {
+	ID string
+}

@@ -1,5 +1,7 @@
 package storage
 
+import "fmt"
+
 type Repository[T any] interface {
 	Create(model T) error
 	Get(ID string, model T) error
@@ -18,7 +20,8 @@ func (u repository[T]) Create(model T) error {
 }
 
 func (u repository[T]) Get(ID string, model T) error {
-	if res := u.db.DB().First(model, ID); res.Error != nil {
+	if res := u.db.DB().First(model, "id = ?", ID); res.Error != nil {
+		fmt.Println(res.Error)
 		return res.Error
 	}
 

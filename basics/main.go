@@ -12,4 +12,5 @@
 package main
 
 func main() {
+	goroutineBench()
 }
