@@ -1,8 +1,8 @@
 package getting
 
 import (
-	"dirStructureLecture/pkg"
 	"dirStructureLecture/pkg/storage"
+	"dirStructureLecture/pkg/types"
 	"errors"
 	"github.com/go-playground/validator/v10"
 )
@@ -63,6 +63,6 @@ func (c GetById) Handle() (User, error) {
 	return model, nil
 }
 
-func NewGetById(user UserId, repository storage.Repository[*User]) pkg.Job[User] {
+func NewGetById(user UserId, repository storage.Repository[*User]) types.Job[User] {
 	return GetById{user: user, repository: repository}
 }

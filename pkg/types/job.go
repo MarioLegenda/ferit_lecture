@@ -1,4 +1,4 @@
-package pkg
+package types
 
 type Job[T any] interface {
 	Validate() error

@@ -100,6 +100,8 @@ func testCreateUser() TestUser {
 
 	err = handler(c)
 
+	fmt.Println("This is body: ", rec.Body.String())
+
 	gomega.Expect(err).Should(gomega.BeNil())
 	gomega.Expect(rec.Code).Should(gomega.Equal(http.StatusCreated))
 

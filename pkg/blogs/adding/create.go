@@ -1,8 +1,8 @@
 package adding
 
 import (
-	"dirStructureLecture/pkg"
 	"dirStructureLecture/pkg/storage"
+	"dirStructureLecture/pkg/types"
 	"errors"
 	"github.com/go-playground/validator/v10"
 )
@@ -62,6 +62,6 @@ func (c Create) Handle() (Blog, error) {
 	return model, nil
 }
 
-func NewBlogCreate(blog Blog, repository storage.Repository[*Blog]) pkg.Job[Blog] {
+func NewBlogCreate(blog Blog, repository storage.Repository[*Blog]) types.Job[Blog] {
 	return Create{blog: blog, repository: repository}
 }

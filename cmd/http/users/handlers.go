@@ -2,10 +2,10 @@ package users
 
 import (
 	"dirStructureLecture/cmd/http/request"
+	"dirStructureLecture/pkg/helpers"
 	"dirStructureLecture/pkg/storage"
 	"dirStructureLecture/pkg/users/adding"
 	"dirStructureLecture/pkg/users/getting"
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -25,8 +25,8 @@ func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 
 		createdUser, err := handler.Handle()
 
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+		if err != nil && err != (*helpers.ValidationError)(nil) {
+			return c.JSON(http.StatusBadRequest, err.(*helpers.ValidationError).Messages())
 		}
 
 		return c.JSON(http.StatusCreated, createdUser)
@@ -41,10 +41,8 @@ func GetUserHandler(db storage.Storage) func(e echo.Context) error {
 
 		fetchedUser, err := handler.Handle()
 
-		fmt.Println(err)
-
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+		if err != nil && err != (*helpers.ValidationError)(nil) {
+			return c.JSON(http.StatusBadRequest, err.(*helpers.ValidationError).Messages())
 		}
 
 		return c.JSON(http.StatusOK, fetchedUser)

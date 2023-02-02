@@ -6,32 +6,48 @@ import (
 	userCreate "dirStructureLecture/pkg/users/adding"
 	"fmt"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
 func main() {
-	loadEnv()
-	db := db()
+	if err := loadEnv(); err != nil {
+		fmt.Println(err)
+		return
+	}
 
+	db, err := db()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if err := migrate(db); err != nil {
+		fmt.Println(err)
+		return
+	}
+}
+
+func migrate(db storage.Storage) error {
 	if err := db.DB().AutoMigrate(userCreate.User{}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := db.DB().AutoMigrate(blogsCreate.Blog{}); err != nil {
-		log.Fatalln(err)
+		return err
 	}
+
+	return nil
 }
 
-func loadEnv() {
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatal(err)
+func loadEnv() error {
+	if err := godotenv.Load(".env"); err != nil {
+		return err
 	}
+
+	return nil
 }
 
-func db() storage.Storage {
+func db() (storage.Storage, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Europe/Zagreb",
 		os.Getenv("DATABASE_HOST"),
@@ -43,8 +59,8 @@ func db() storage.Storage {
 	db, err := storage.NewStorage(dsn)
 
 	if err != nil {
-		log.Fatalln(err)
+		return nil, err
 	}
 
-	return db
+	return db, nil
 }
