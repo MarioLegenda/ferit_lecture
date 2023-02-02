@@ -29,7 +29,7 @@ func (u repository[T]) Get(ID string, model T) error {
 }
 
 func (u repository[T]) Delete(ID string, model T) error {
-	if res := u.db.DB().Table("users").Where("ID = ?", ID).Delete(&User{}); res.Error != nil {
+	if res := u.db.DB().Where("ID = ?", ID).Delete(&model); res.Error != nil {
 		return res.Error
 	}
 
