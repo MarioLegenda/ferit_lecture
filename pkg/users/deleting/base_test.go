@@ -1,36 +1,23 @@
-package blogs
+package deleting
 
 import (
-	"dirStructureLecture/cmd/http/request"
-	"dirStructureLecture/cmd/http/users"
 	"dirStructureLecture/pkg/storage"
-	"encoding/json"
+	"dirStructureLecture/pkg/users/adding"
 	"fmt"
 	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega"
 	"log"
-	"net/http"
-	"net/http/httptest"
 	"os"
-	"strings"
 	"testing"
 )
 
 func loadEnv() {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load("../../../.env")
 
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-type TestUser struct {
-	Name     string `json:"Name"`
-	ID       string `json:"ID"`
-	LastName string `json:"LastName"`
-	Email    string `json:"Email"`
 }
 
 var GomegaRegisterFailHandler = gomega.RegisterFailHandler
@@ -81,30 +68,16 @@ var _ = GinkgoAfterSuite(func() {
 	}
 })
 
-func testCreateUser() TestUser {
-	e := echo.New()
-	b, err := json.Marshal(request.User{
-		Name:     "name",
-		LastName: "lastName",
-		Email:    "email@email.com",
-	})
+func testCreateUser(name string, lastName string, email string) adding.User {
+	handler := adding.NewUserCreate(adding.User{
+		Name:     name,
+		LastName: lastName,
+		Email:    email,
+	}, storage.NewRepository[*adding.User](postgresDb))
+
+	createdUser, err := handler.Handle()
 
 	gomega.Expect(err).Should(gomega.BeNil())
 
-	req := httptest.NewRequest(http.MethodPost, "/user", strings.NewReader(string(b)))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-
-	handler := users.CreateUserHandler(postgresDb)
-
-	err = handler(c)
-
-	gomega.Expect(err).Should(gomega.BeNil())
-	gomega.Expect(rec.Code).Should(gomega.Equal(http.StatusCreated))
-
-	var user TestUser
-	gomega.Expect(json.Unmarshal(rec.Body.Bytes(), &user)).Should(gomega.BeNil())
-
-	return user
+	return createdUser
 }

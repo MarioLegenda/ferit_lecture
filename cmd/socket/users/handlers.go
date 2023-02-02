@@ -53,8 +53,6 @@ func CreateUserHandler(db storage.Storage) func(e echo.Context) error {
 				return nil
 			}
 
-			fmt.Printf("Created a new user: %s. Sending it back...\n", msg)
-
 			b, _ := json.Marshal(createdUser)
 
 			err = ws.WriteMessage(websocket.TextMessage, b)

@@ -54,4 +54,24 @@ var _ = GinkgoDescribe("User", func() {
 		gomega.Expect(err).Should(gomega.BeNil())
 		gomega.Expect(rec.Code).Should(gomega.Equal(http.StatusOK))
 	})
+
+	GinkgoIt("should delete", func() {
+		e := echo.New()
+
+		user := testCreateUser("name", "lastName", "email@email.com")
+		req := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/user/%s", user.ID), nil)
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		rec := httptest.NewRecorder()
+		c := e.NewContext(req, rec)
+		c.SetPath("/user/:id")
+		c.SetParamNames("id")
+		c.SetParamValues(user.ID)
+
+		handler := DeleteUserHandler(postgresDb)
+
+		err := handler(c)
+
+		gomega.Expect(err).Should(gomega.BeNil())
+		gomega.Expect(rec.Code).Should(gomega.Equal(http.StatusOK))
+	})
 })

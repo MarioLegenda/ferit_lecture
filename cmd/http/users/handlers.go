@@ -5,7 +5,9 @@ import (
 	"dirStructureLecture/pkg/helpers"
 	"dirStructureLecture/pkg/storage"
 	"dirStructureLecture/pkg/users/adding"
+	"dirStructureLecture/pkg/users/deleting"
 	"dirStructureLecture/pkg/users/getting"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -46,5 +48,23 @@ func GetUserHandler(db storage.Storage) func(e echo.Context) error {
 		}
 
 		return c.JSON(http.StatusOK, fetchedUser)
+	}
+}
+
+func DeleteUserHandler(db storage.Storage) func(e echo.Context) error {
+	return func(c echo.Context) error {
+		handler := deleting.NewUserDeleteById(deleting.UserID{
+			ID: c.Param("id"),
+		}, storage.NewRepository[*deleting.User](db))
+
+		_, err := handler.Handle()
+
+		fmt.Println(err)
+
+		if err != nil && err != (*helpers.ValidationError)(nil) {
+			return c.JSON(http.StatusBadRequest, err.(*helpers.ValidationError).Messages())
+		}
+
+		return c.JSON(http.StatusOK, nil)
 	}
 }

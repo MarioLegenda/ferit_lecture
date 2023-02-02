@@ -41,8 +41,7 @@ var _ = GinkgoDescribe("User", func() {
 		err = ws.WriteMessage(websocket.TextMessage, b)
 		gomega.Expect(err).Should(gomega.BeNil())
 
-		_, p, err := ws.ReadMessage()
+		_, _, err = ws.ReadMessage()
 		gomega.Expect(err).Should(gomega.BeNil())
-		fmt.Println(string(p))
 	})
 })
